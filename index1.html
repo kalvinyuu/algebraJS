@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>algebra</title>
+    <meta charset="utf-8">
+    <style>
+      * {
+	  font-family: comic sans, comic sans ms, cursive;
+	  font-size: x-large
+      }
+      li::before {
+	  content: "\3009"
+      }
+      li::marker {
+	  font-family: serif
+      }
+      #displayInput {
+	  text-align: center;
+      }
+
+      body {
+	  padding-left: 15%;
+	  padding-right: 15%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="page">
+      <script src="myRanCol.js"></script>
+      <script src="inputDisplay.js"></script>
+      <div id="displayInput">
+	<textarea id="display" rows='5' cols="40" readonly></textarea>	  
+	<br></br>
+        <form id="field" >
+          <input id="input" type="text" style="width: 65%;">
+          <button id="btn" type="button"  onclick="trigger()">=</button>
+        </form>
+      </div>
+      <ol id="recent"></ol>
+    </div>
+  </body>
+</html>
