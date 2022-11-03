@@ -4,7 +4,7 @@ let bracketNum = 0
 let k = 0
 let pre = 0
 
-class subEqCreator {
+class subEqCreator { //subEq object
     constructor() {
 	this.precede = 0;
 	this.string = '';
@@ -12,12 +12,16 @@ class subEqCreator {
     parser() {
 	this.string += eq[k]
     }
+    ma(){
+	this.string.split(' ')
+    }    
 };
-function trigger() {
+function trigger() { //used for HTML onClick method
     show();
     brackets();
     subEqDynamic()
     parseEquation();
+    objectPutter()
 };
 function show() {
     const recent = document.querySelector("ol");
@@ -28,19 +32,19 @@ function show() {
     recent.appendChild(li);    
     txt.value = '';
 };
-function brackets() {
+function brackets() { //counts how many brackets appear
     for (let i = 0; i < eq.length; i++) {
 	if (eq[i] == "(") {
 	    bracketNum++;
 	};
     };
 };
-let subEqDynamic = function() {
+let subEqDynamic = function() { // creates a new object for each bracket
     for (let count = 0; count <= bracketNum; count++) {
         this['subEq' + count] = x =  new subEqCreator() 
     };
 };
-function parseEquation() {
+function parseEquation() { // assign characters to SubEq object
     let nextIndex = 0; 
     let currentIndex = 0; 
     let lastIndex = [0]; 
@@ -51,7 +55,7 @@ function parseEquation() {
         if (eq[k] == "(") {          
             nextIndex++;
 	    pre++
-            this['subEq' + currentIndex].string += '()';
+            this['subEq' + currentIndex].string += '( )';
 	    this['subEq' + nextIndex].precede = pre;
             lastIndex.push(currentIndex);
             currentIndex = nextIndex;
@@ -64,4 +68,20 @@ function parseEquation() {
 	    this['subEq' + currentIndex].parser()
         }       
     }    
+}
+
+function objectPutter(){ //dis gonna be a franken function
+    for(let i = 0; i < bracketNum; i++){
+	let wowza = this['subEq' + i].string
+	if (wowza.includes('( )')) {
+	    wowza.ma();
+	    console.log(typeof wowza);
+	    for(let j = 1; j <= wowza.length; j+=2) {// 🚩 for loop generates only odds
+		let ni = i++
+		wowza.splice( j, 0, this['subEq' + ni])
+		console.log('yer ma')
+	    }
+	}
+    } 
+
 }
