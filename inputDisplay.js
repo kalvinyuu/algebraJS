@@ -82,7 +82,7 @@ function objectPutter() {
 	    for(let j = 1; j < this['subEq' + i].text.length; j+=2) {// 🚩 for loop generates only odds
 		console.log(i)
 		let ni = i + p
-		this['subEq' + i].text.splice(j, 0, this['subEq' + ni])
+		this['subEq' + i].text.splice(j, 0, this['subEq' + ni].text)
 		p++
 	    }
 	}
