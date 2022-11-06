@@ -1,21 +1,13 @@
 let eq
-let x = null
+
+//brackets 
+let x = null // this might not be needed
 let bracketNum = 0
 let k = 0
 let pre = 0
 
-class subEqCreator { //subEq object
-    constructor() {
-	this.text = '';
-	this.precede = 0;
-    }
-    parser() {
-	this.text += eq[k]
-    }
-    ma(){
-	this.text.split(' ')
-    }    
-};
+//general HTML to JS pre wiring
+
 function trigger() { //used for HTML onClick method
     show();
     brackets();
@@ -32,6 +24,23 @@ function show() {
     recent.appendChild(li);    
     txt.value = '';
 };
+
+//brackets organiser
+
+class subEqCreator { //subEq object
+    constructor() {
+	this.text = '';
+	this.precede = 0;
+    }
+    parser() {
+	this.text += eq[k]
+    }
+    ma(){
+	this.text.split(' ')
+    }    
+};
+
+
 function brackets() { //counts how many brackets appear
     for (let i = 0; i < eq.length; i++) {
 	if (eq[i] == "(") {
@@ -74,8 +83,6 @@ function parseEquation() { // assign characters to SubEq object
 function objectPutter() { 
     for(let i = 0; i < bracketNum; i++) {
 	if ( this['subEq' + i].text.includes('( )')) {
-	    
-	    //	let wowza = this['subEq' + i].text
 	    this['subEq' + i].text = this['subEq' + i].text.split(' '); // why isnt it working here
 	    console.log(this['subEq' + i]);
 	    let p = 1
@@ -88,3 +95,5 @@ function objectPutter() {
 	}
     } 
 }
+
+
