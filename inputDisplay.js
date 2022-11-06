@@ -6,8 +6,8 @@ let pre = 0
 
 class subEqCreator { //subEq object
     constructor() {
-	this.precede = 0;
 	this.text = '';
+	this.precede = 0;
     }
     parser() {
 	this.text += eq[k]
@@ -74,12 +74,16 @@ function parseEquation() { // assign characters to SubEq object
 function objectPutter() { 
     for(let i = 0; i < bracketNum; i++) {
 	if ( this['subEq' + i].text.includes('( )')) {
+	    
 	    //	let wowza = this['subEq' + i].text
 	    this['subEq' + i].text = this['subEq' + i].text.split(' '); // why isnt it working here
 	    console.log(this['subEq' + i]);
-	    for(let j = 1; j <= this['subEq' + i].text.length; j+=2) {// 🚩 for loop generates only odds
+	    let p = 1
+	    for(let j = 1; j < this['subEq' + i].text.length; j+=2) {// 🚩 for loop generates only odds
 		console.log(i)
-		this['subEq' + i].text.splice(j, 0, this['subEq' + i+1])
+		let ni = i + p
+		this['subEq' + i].text.splice(j, 0, this['subEq' + ni])
+		p++
 	    }
 	}
     } 
