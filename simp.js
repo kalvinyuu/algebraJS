@@ -23,7 +23,8 @@ function worker(array, num) {
 	X = X.split(returnNum) //removes numbers from array
     }
     array = array.map(x => x + num) //concatinates the letters from num to array if any
-    console.log(array)
+    //console.log(array)
+    console.log(num)
  }
 
 parser()
