@@ -80,6 +80,7 @@ function parseEquation() { // assign characters to SubEq object
 }
 function objectPutter() { 
     for(let i = 0; i < bracketNum; i++) {
+	
 	if ( this['subEq' + i].text.includes('( )')) {
 	    this['subEq' + i].text = this['subEq' + i].text.split(' '); // why isnt it working here
 	    let p = 1
@@ -91,6 +92,7 @@ function objectPutter() {
 	}
     } 
 }
+
 function crossMultiplier() {
     eqObjs.sort((a, b) => b.precede - a.precede)
     let topPrec = eqObjs[0].precede
@@ -100,8 +102,6 @@ function crossMultiplier() {
 	element = element.filter(e => e)
 	result[i] = element
     })
-    console.log(result)
-    console.log(subEq2)
     function parser(index, arr, currentArr) {
 	for(let i = 0; i < result.length-1; i++){ // loops result except last
 	    currentArr = result[i]
@@ -115,20 +115,29 @@ function crossMultiplier() {
 	}
     }
     parser()
-    function worker(array, num) {
+    function worker(array, num, X) {
 	const returnNum = (element) => parseFloat(element); 
-	let arrNum = array.map(returnNum) // filters floats from array
-	let numNum = parseFloat(num) // filters floats from num
+	let arrNum = array.map(returnNum) // remove letters from arr 
+	let numNum = parseFloat(num) // remove letters from num
 	arrNum = arrNum.map(x => x * numNum) // multiplies the array
 	num = num.split(returnNum) // removes number from num
+	if (/(\+\w*|\-\w*)/.test(num)) {
+	    num = num.toString()
+	    num.replace(/(\+\w*|\-\w*)/, /(\+1\w*|\-1\w*)/)
+	}
 	for(let I = 0; I < array.length; I++) {
 	    X = array[I]
 	    X = X.split(returnNum) //removes numbers from array
+	    if (/(\+\w*|\-\w*)/.test(xX)) {
+		X = X.toString()
+		X.replace(/(\+\w*)/, /(\+1\w*)/)
+		X.replace(/(\-\w*)/, /(\-1\w*)/)
+		console.log(X)
+	    }
 	}
 	array = array.map(x => x + num) //concatinates the letters from num to array if any
 	//console.log(array)
-	console.log(num)
-	
+	console.log(arrNum)
     }
 
 }   
