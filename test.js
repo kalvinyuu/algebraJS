@@ -29,15 +29,18 @@ function trigger() {
         letter;
         powers;
         expSym;
+        longForm;
         constructor(x) {
             this.letter = x;
             this.powers = [1];
             this.expSym = [x];
+            this.longForm = [x];
         }
         fPushNum(x) {
             this.powers.push(x);
         }
-        fCreateExpSym() {
+        fCreateExpSym(x) {
+            this.powers.push(x);
         }
     }
     ;
@@ -164,33 +167,35 @@ function trigger() {
             //deals with aSymbols from here on!
             num = num.split(parseFloat(num) || /\-|\+/);
             num = num.join(''); // removes number from num
-            //console.log(array)
             aSymbols = array.map(x => x.split(parseFloat(x) || /\-|\+/));
-            //aSymbols = array.map(x => x.split(/\-|\+/))
             aSymbols = aSymbols.map(x => x.join(''));
             aSymbols = aSymbols.flat();
-            //aSymbols.push(num)
             aSymbols = aSymbols.map(x => x + num); //concatinates the letters from num to array if any
             aSymbolsTemp.push(aSymbols);
         }
         aSymbolsTemp = aSymbolsTemp.flat();
         temp = temp.flat();
-        for (let i = 0; i < temp.length; i++) {
+        for (let i = 0; i < temp.length; i++) { //i could easily make a function for this
             temp[i] += aSymbolsTemp[i];
         }
-        function fAVars(aVars, aEq) {
-            //adds algebra and turns xx into x**2
-            for (let i = 0; i < aEq.length; i++) {
-                if (letterRe.test(aEq[i])) {
-                    new oAlgSym(aEq[i]);
+        function compareNPush(x, y) {
+            for (let i = 0; i < x.length; i++) { //i could easily make a function for this
+                if (x[i].length > 0) {
+                    if (y.includes(x[i]) == false) {
+                        y.push(aSymbolsTemp[i]);
+                    }
                 }
             }
+        }
+        compareNPush(aSymbolsTemp, algSyms);
+        console.log(algSyms);
+        function fAVars(aVars, aEq) {
             function filterItems(aVarsOrganised, query) {
                 return aVarsOrganised.filter((el) => el.includes());
             }
         }
         ;
-        fAVars(algSyms, temp.join());
+        fAVars(algSyms, temp);
     }
     crossMultiplier();
 }
