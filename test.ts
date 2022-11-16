@@ -22,19 +22,44 @@ function trigger() { //used for HTML onClick method
             this.precede = 0;
         }
         parser() {
-            this.text += eq[z]
+            this.text += eq[counter]
+        }
+    };
+    class oAlgSym { //subEq object
+        letter: string;
+        powers: number[]
+        expSym: string[]
+
+        constructor(x: string) {
+            this.letter = x;
+            this.powers = [1];
+            this.expSym = [x]
+        }
+        fPushNum(x: number) {
+            this.powers.push(x)
+        }
+        fCreateExpSym() {
+
         }
     };
 
     let bracketNum = 0
-    let z = 0
+    let counter = 0
     let pre = 0
     let eqObjs: subEqCreator[] = []
-
+    let algSyms = []
+    const letterRe = /[A-Za-z]+/g
     function brackets() { //counts how many brackets appear
         for (let i = 0; i < eq.length; i++) {
             if (eq[i] == "(") {
                 bracketNum++;
+            };
+            if (letterRe.test(eq[i])) {
+                if (algSyms.includes(eq[i]) == false) {
+                    this['algebraSym_' + eq[i]] = new oAlgSym(eq[i])
+                    algSyms.push(eq[i])
+                    console.log(algebraSym_x)
+                }
             };
         };
     };
@@ -52,8 +77,8 @@ function trigger() { //used for HTML onClick method
         let currentIndex = 0;
         let lastIndex = [0];
         let eqLen = eq.length;
-        for (z; z < eqLen; z++) {
-            if (eq[z] == "(") {
+        for (counter; counter < eqLen; counter++) {
+            if (eq[counter] == "(") {
                 nextIndex++;
                 pre++
                 this['subEq' + currentIndex].text += '( )';
@@ -61,7 +86,7 @@ function trigger() { //used for HTML onClick method
                 lastIndex.push(currentIndex);
                 currentIndex = nextIndex;
             }
-            else if (eq[z] == ")") {
+            else if (eq[counter] == ")") {
                 pre--
                 currentIndex = lastIndex.pop();
             }
@@ -88,6 +113,7 @@ function trigger() { //used for HTML onClick method
     }
     objectPutter();
     function crossMultiplier() {
+
         eqObjs.sort((a, b) => b.precede - a.precede)
         let topPrec = eqObjs[0].precede
         let result = eqObjs.filter(limit => limit.precede == topPrec)
@@ -96,6 +122,8 @@ function trigger() { //used for HTML onClick method
             element = element.filter(e => e)
             result[i] = element
         })
+        let temp = []
+        let aSymbolsTemp = []
         function parser() {
             for (let i = 0; i < result.length - 1; i++) { // loops result except last
                 let currentArr: subEqCreator | any = result[i]
@@ -109,31 +137,64 @@ function trigger() { //used for HTML onClick method
             }
         }
         parser()
-        function worker(array:, num) {
+        function worker(array, num) {
             const returnNum = (element) => parseFloat(element);
-            let arrNum = array.map(returnNum) // remove letters from arr 
-            let numNum = parseFloat(num) // remove letters from num
-            arrNum = arrNum.map(x => x * numNum) // multiplies the array
-            num = num.split(returnNum) // removes number from num
-            if (/(\+\w*|\-\w*)/.test(num)) {
-                num = num.toString()
-                num.replace(/(\+\w*|\-\w*)/, /(\+1\w*|\-1\w*)/)
+            let nNum = 0
+            let aNum = []
+            let aSymbols = []
+            function fArrNum() {
+                aNum = array.map(returnNum)
+                aNum.forEach((element, index) => {
+                    if (isNaN(element)) {
+                        aNum[index] = array[index].replace(/[A-Za-z]+/g, '1')
+                    }
+                })
             }
-            for (let I = 0; I < array.length; I++) {
-                let X = array[I]
-                X = X.split(returnNum) //removes numbers from array
-                if (/(\+\w*|\-\w*)/.test(X)) {
-                    X = X.toString()
-                    X.replace(/(\+\w*)/, /(\+1\w*)/)
-                    X.replace(/(\-\w*)/, /(\-1\w*)/)
-                    console.log(X)
+            fArrNum()
+
+            nNum = parseFloat(num) // remove letters from num
+
+            if (isNaN(nNum)) {
+
+                if (num[0] == '-') {
+                    nNum = -1
+                }
+                else
+                    nNum = 1
+            }
+            aNum = aNum.map(x => x * nNum) // multiplies arrNum by numNum
+            temp.push(aNum)
+            //deals with aSymbols from here on!
+            num = num.split(parseFloat(num) || /\-|\+/)
+            num = num.join('')// removes number from num
+            //console.log(array)
+            aSymbols = array.map(x => x.split(parseFloat(x) || /\-|\+/))
+            //aSymbols = array.map(x => x.split(/\-|\+/))
+            aSymbols = aSymbols.map(x => x.join(''))
+            aSymbols = aSymbols.flat()
+            //aSymbols.push(num)
+            aSymbols = aSymbols.map(x => x + num) //concatinates the letters from num to array if any
+            aSymbolsTemp.push(aSymbols)
+        }
+        aSymbolsTemp = aSymbolsTemp.flat()
+        temp = temp.flat()
+        for (let i = 0; i < temp.length; i++) {
+            temp[i] += aSymbolsTemp[i]
+        }
+        function fAVars(aVars, aEq) {
+
+
+            //adds algebra and turns xx into x**2
+            for (let i = 0; i < aEq.length; i++) {
+                if (letterRe.test(aEq[i])) {
+                    new oAlgSym(aEq[i])
                 }
             }
-            array = array.map(x => x + num) //concatinates the letters from num to array if any
-            //console.log(array)
-            console.log(arrNum)
-        }
-
+            function filterItems(aVarsOrganised, query) {
+                return aVarsOrganised.filter((el) => el.includes());
+            }
+        };
+        fAVars(algSyms, temp.join())
     }
     crossMultiplier();
 };
