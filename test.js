@@ -25,47 +25,33 @@ function trigger() {
         }
     }
     ;
-    class oAlgSym {
-        letter;
-        powers;
-        expSym;
-        longForm;
-        constructor(x) {
-            this.letter = x;
-            this.powers = [1];
-            this.expSym = [x];
-            this.longForm = [x];
-        }
-        fPushNum(x) {
-            this.powers.push(x);
-        }
-        fCreateExpSym(x) {
-            this.powers.push(x);
-        }
-    }
-    ;
     let bracketNum = 0;
     let counter = 0;
     let pre = 0;
     let eqObjs = [];
     let algSyms = [];
-    const letterRe = /[A-Za-z]+/g;
+    const letterRe = /([A-Za-z]+(\*{2}[0-9]+)([A-Za-z]*(\*{2}[0-9]+)*)*)|[A-Za-z]+/g;
+    function regexPush(x) {
+        for (const v of x.match(letterRe)) {
+            if (algSyms.includes(v) == false) {
+                algSyms.push(v);
+            }
+        }
+    }
     function brackets() {
         for (let i = 0; i < eq.length; i++) {
             if (eq[i] == "(") {
                 bracketNum++;
             }
             ;
-            if (letterRe.test(eq[i])) {
-                if (algSyms.includes(eq[i]) == false) {
-                    this['algebraSym_' + eq[i]] = new oAlgSym(eq[i]);
-                    algSyms.push(eq[i]);
-                    console.log(algebraSym_x);
-                }
-            }
-            ;
+            /*  if (letterRe.test(eq[i])) {
+                  if (algSyms.includes(eq[i]) == false) {
+                      algSyms.push(eq[i])
+                  }
+              };*/
         }
         ;
+        regexPush(eq);
     }
     ;
     brackets();
@@ -178,24 +164,33 @@ function trigger() {
         for (let i = 0; i < temp.length; i++) { //i could easily make a function for this
             temp[i] += aSymbolsTemp[i];
         }
+        regexPush(temp.toString());
+        console.log(algSyms);
+        function foo() {
+            for (let i = 0; i < algSyms.length; i++) {
+                let a = 0;
+                let b = algSyms[i].charAt(a);
+                console.log(algSyms[i]);
+                let c = algSyms[i].split(b).length - 1;
+                if (c > 1) {
+                    let str = `${b}**${c}`;
+                    algSyms[i] = algSyms[i].replaceAll(b, '');
+                    algSyms[i] = algSyms[i].replace('', str);
+                    a = str.length + 1;
+                }
+            }
+        }
+        foo();
         function compareNPush(x, y) {
             for (let i = 0; i < x.length; i++) { //i could easily make a function for this
                 if (x[i].length > 0) {
                     if (y.includes(x[i]) == false) {
                         y.push(aSymbolsTemp[i]);
+                        console.log(y);
                     }
                 }
             }
         }
-        compareNPush(aSymbolsTemp, algSyms);
-        console.log(algSyms);
-        function fAVars(aVars, aEq) {
-            function filterItems(aVarsOrganised, query) {
-                return aVarsOrganised.filter((el) => el.includes());
-            }
-        }
-        ;
-        fAVars(algSyms, temp);
     }
     crossMultiplier();
 }
