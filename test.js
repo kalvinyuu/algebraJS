@@ -30,6 +30,29 @@ function trigger() {
     let pre = 0;
     let eqObjs = [];
     let algSyms = [];
+    function expForm(x) {
+        for (let i = 0; i < x.length; i++) {
+            let a = x[i].search(/[a-zA-z]/);
+            function part1() {
+                let b = x[i].charAt(a);
+                let c = x[i].split(b).length - 1;
+                if (c > 1) {
+                    let str = `${b}**${c}`;
+                    let d = b.repeat(c);
+                    x[i] = x[i].replace(d, str);
+                    a += str.length;
+                }
+            }
+            part1();
+            if (a < x[i].length) {
+                for (a; a < x[i].length; a++) {
+                    if ((/A-Za-z/).test(x[a])) {
+                        part1();
+                    }
+                }
+            }
+        }
+    }
     const letterRe = /([A-Za-z]+(\*{2}[0-9]+)([A-Za-z]*(\*{2}[0-9]+)*)*)|[A-Za-z]+/g;
     function regexPush(x) {
         for (const v of x.match(letterRe)) {
@@ -103,6 +126,8 @@ function trigger() {
     }
     objectPutter();
     function crossMultiplier() {
+        let temp = [];
+        let aSymbolsTemp = [];
         eqObjs.sort((a, b) => b.precede - a.precede);
         let topPrec = eqObjs[0].precede;
         let result = eqObjs.filter(limit => limit.precede == topPrec);
@@ -111,8 +136,6 @@ function trigger() {
             element = element.filter(e => e);
             result[i] = element;
         });
-        let temp = [];
-        let aSymbolsTemp = [];
         function parser() {
             for (let i = 0; i < result.length - 1; i++) { // loops result except last
                 let currentArr = result[i];
@@ -156,7 +179,7 @@ function trigger() {
             aSymbols = array.map(x => x.split(parseFloat(x) || /\-|\+/));
             aSymbols = aSymbols.map(x => x.join(''));
             aSymbols = aSymbols.flat();
-            aSymbols = aSymbols.map(x => x + num); //concatinates the letters from num to array if any
+            aSymbols = aSymbols.map(x => x + num); //concatinates the letters from num 
             aSymbolsTemp.push(aSymbols);
         }
         aSymbolsTemp = aSymbolsTemp.flat();
@@ -165,22 +188,11 @@ function trigger() {
             temp[i] += aSymbolsTemp[i];
         }
         regexPush(temp.toString());
+        expForm(temp);
+        console.log(temp);
+        console.log(aSymbolsTemp);
+        expForm(algSyms);
         console.log(algSyms);
-        function foo() {
-            for (let i = 0; i < algSyms.length; i++) {
-                let a = 0;
-                let b = algSyms[i].charAt(a);
-                console.log(algSyms[i]);
-                let c = algSyms[i].split(b).length - 1;
-                if (c > 1) {
-                    let str = `${b}**${c}`;
-                    algSyms[i] = algSyms[i].replaceAll(b, '');
-                    algSyms[i] = algSyms[i].replace('', str);
-                    a = str.length + 1;
-                }
-            }
-        }
-        foo();
         function compareNPush(x, y) {
             for (let i = 0; i < x.length; i++) { //i could easily make a function for this
                 if (x[i].length > 0) {
